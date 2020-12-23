@@ -1,6 +1,8 @@
 import express from "express";
 const app = express();
 import products from "./data/products.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 app.get("/", (req, res) => {
     res.send("Hello from Proshop application");
