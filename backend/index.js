@@ -1,16 +1,16 @@
-const express = require("express");
+import express from "express";
 const app = express();
-const products = require("./data/products");
+import products from "./data/products.js";
 
 app.get("/", (req, res) => {
     res.send("Hello from Proshop application");
 });
 
-app.get("/product", (req, res) => {
+app.get("/api/product", (req, res) => {
     res.json(products);
 });
 
-app.get("/product/:id", (req, res) => {
+app.get("/api/product/:id", (req, res) => {
     const product = products.find((p) => p._id === req.params.id);
     res.json(product);
 });
