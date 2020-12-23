@@ -11,8 +11,8 @@ const Header = () => {
                         <img
                             alt=""
                             src={logo}
-                            width="30"
-                            height="30"
+                            width="20"
+                            height="20"
                             className="d-inline-block align-top"
                         />{" "}
                         proshop
