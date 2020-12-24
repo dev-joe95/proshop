@@ -18,7 +18,7 @@ const productSchema = mongoose.Schema(
             required: true,
         },
         description: {
-            type: Text,
+            type: String,
             required: true,
             unique: true,
         },
@@ -38,7 +38,7 @@ const productSchema = mongoose.Schema(
             default: false,
         },
         brand: {
-            type: Text,
+            type: String,
             required: true,
         },
         reviews: [reviewSchema],
