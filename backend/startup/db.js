@@ -11,10 +11,11 @@ const db = async () => {
             }
         );
         console.log(
-            `MongoDB connected: http:// ${con.connection.host}:${con.connection.port}`
+            `MongoDB connected: http://${con.connection.host}:${con.connection.port}`
+                .bgGreen.black
         );
     } catch (err) {
-        console.error(`MongoDB error log: ${err.message}`);
+        console.error(`MongoDB error log: ${err.message}`.bgRed.black.bold);
         process.exit(1);
     }
 };
