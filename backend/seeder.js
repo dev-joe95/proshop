@@ -125,8 +125,8 @@ const insertData = async () => {
         const newUsers = await User.insertMany(users);
         const adminUser = newUsers[0]._id;
         const newCat = await Category.insertMany(categories);
-        const cat = newCat[Math.random(0, 2)]._id;
-        
+        const cat = newCat[0]._id;
+
         const sampleProducts = products.map((p) => {
             return { ...p, user: adminUser, category: cat };
         });
@@ -143,6 +143,7 @@ const insertData = async () => {
 const destroyData = async () => {
     try {
         await User.deleteMany();
+        await Category.deleteMany();
         await Product.deleteMany();
 
         console.log("Data destroyed".red.inverse);
