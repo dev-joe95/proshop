@@ -1,6 +1,48 @@
+import mongoose from "mongoose";
+import colors from "colors";
+import dotenv from "dotenv";
+import db from "./startup/db.js";
+import User from "./models/user.js";
+import Product from "./models/product.js";
+import Category from "./models/category.js";
+import bcrypt from "bcryptjs";
+
+dotenv.config();
+db();
+
+const categories = [
+    {
+        name: "Mobiles",
+    },
+    {
+        name: "Accessories",
+    },
+    {
+        name: "High-Tech",
+    },
+];
+
+const users = [
+    {
+        name: "Admin",
+        email: "admin@example.com",
+        password: bcrypt.hashSync("ahmed123456", 10),
+        isAdmin: true,
+    },
+    {
+        name: "Hesham",
+        email: "h.hesham90@example.com",
+        password: bcrypt.hashSync("hesham123456", 10),
+    },
+    {
+        name: "Ramy",
+        email: "ali.ramy78@example.com",
+        password: bcrypt.hashSync("ramy123456", 10),
+    },
+];
+
 const products = [
     {
-        _id: "1",
         name: "Airpods Wireless Bluetooth Headphones",
         image: "/images/airpods.jpg",
         description:
@@ -13,7 +55,6 @@ const products = [
         numReviews: 12,
     },
     {
-        _id: "2",
         name: "iPhone 11 Pro 256GB Memory",
         image: "/images/phone.jpg",
         description:
@@ -26,7 +67,6 @@ const products = [
         numReviews: 8,
     },
     {
-        _id: "3",
         name: "Cannon EOS 80D DSLR Camera",
         image: "/images/camera.jpg",
         description:
@@ -39,7 +79,6 @@ const products = [
         numReviews: 12,
     },
     {
-        _id: "4",
         name: "Sony Playstation 4 Pro White Version",
         image: "/images/playstation.jpg",
         description:
@@ -52,7 +91,6 @@ const products = [
         numReviews: 12,
     },
     {
-        _id: "5",
         name: "Logitech G-Series Gaming Mouse",
         image: "/images/mouse.jpg",
         description:
@@ -65,7 +103,6 @@ const products = [
         numReviews: 10,
     },
     {
-        _id: "6",
         name: "Amazon Echo Dot 3rd Generation",
         image: "/images/alexa.jpg",
         description:
@@ -79,4 +116,46 @@ const products = [
     },
 ];
 
-export default products;
+const insertData = async () => {
+    try {
+        await User.deleteMany();
+        await Category.deleteMany();
+        await Product.deleteMany();
+
+        const newUsers = await User.insertMany(users);
+        const adminUser = newUsers[0]._id;
+        const newCat = await Category.insertMany(categories);
+        const cat = newCat[0]._id;
+
+        const sampleProducts = products.map((p) => {
+            return { ...p, user: adminUser, category: cat };
+        });
+        await Product.insertMany(sampleProducts);
+
+        console.log("Data imported".green.inverse);
+        process.exit();
+    } catch (error) {
+        console.error(`${error.message}`.red.inverse);
+        process.exit(1);
+    }
+};
+
+const destroyData = async () => {
+    try {
+        await User.deleteMany();
+        await Category.deleteMany();
+        await Product.deleteMany();
+
+        console.log("Data destroyed".red.inverse);
+        process.exit();
+    } catch (error) {
+        console.error(`${error.message}`.red.inverse);
+        process.exit(1);
+    }
+};
+
+if (process.argv[2] === "-d") {
+    destroyData();
+} else {
+    insertData();
+}
