@@ -1,9 +1,11 @@
 import React from "react";
-import { Navbar, Nav, NavDropdown, Container } from "react-bootstrap";
+import { Navbar, Nav, NavDropdown, Container, Badge } from "react-bootstrap";
 import logo from "../logo.svg";
 import { LinkContainer } from "react-router-bootstrap";
+import { useSelector } from "react-redux";
 
 const Header = () => {
+    const { cartItems } = useSelector((state) => state.cart);
     return (
         <header>
             <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
@@ -59,6 +61,11 @@ const Header = () => {
                         <Nav>
                             <LinkContainer to="/cart">
                                 <Nav.Link>
+                                    {cartItems.length > 0 && (
+                                        <Badge variant="danger" className="rounded">
+                                            {cartItems.length}
+                                        </Badge>
+                                    )}
                                     <i className="fas fa-shopping-cart px-1"></i>
                                     cart
                                 </Nav.Link>
