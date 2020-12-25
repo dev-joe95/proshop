@@ -1,26 +1,36 @@
-import React, { useState, useEffect } from "react";
-import { Col, Row } from "react-bootstrap";
-import axios from "axios";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Alert, Col, Row } from "react-bootstrap";
 import Product from "../components/Product";
+import Loader from "../components/Loader";
+import { listProducts } from "../actions/productActions";
+
 const HomeScreen = () => {
-    const [products, getProducts] = useState([]);
+    const dispatch = useDispatch();
+    const { loading, products, errors } = useSelector(
+        (state) => state.productList
+    );
     useEffect(() => {
-        const fetchProducts = async () => {
-            const { data } = await axios.get("/api/product");
-            getProducts(data)
-        };
-        fetchProducts()
-    },[]);
+        dispatch(listProducts());
+    }, [dispatch]);
     return (
         <React.Fragment>
-            <h2>Latest Products</h2>
-            <Row>
-                {products.map((p, index) => (
-                    <Col key={index} sm={12} md={6} lg={4} xl={3}>
-                        <Product product={p} />
-                    </Col>
-                ))}
-            </Row>
+            {loading ? (
+                <Loader />
+            ) : errors ? (
+                <Alert variant="danger">{errors}</Alert>
+            ) : (
+                <React.Fragment>
+                    <h2>Latest Products</h2>
+                    <Row>
+                        {products.map((p, index) => (
+                            <Col key={index} sm={12} md={6} lg={4} xl={3}>
+                                <Product product={p} />
+                            </Col>
+                        ))}
+                    </Row>
+                </React.Fragment>
+            )}
         </React.Fragment>
     );
 };
