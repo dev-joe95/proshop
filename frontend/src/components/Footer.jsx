@@ -7,15 +7,15 @@ const Footer = () => {
         <footer className="bg-dark text-white">
             <Container>
                 <Row>
-                    <Col className="text-center py-4">
-                        Copyright &copy; {new Date().getFullYear()}{" "}
+                    <Col className="text-center py-5">
+                        Copyright &copy; {new Date().getFullYear()}
                         <img
                             alt=""
                             src={logo}
                             width="20"
                             height="20"
-                            className="d-inline-block align-top"
-                        />{" "}
+                            className="d-inline-block align-top mx-1"
+                        />
                         Proshop
                     </Col>
                 </Row>
