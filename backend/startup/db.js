@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const db = async () => {
     try {
         const con = await mongoose.connect(
-            `${process.env.CONNECTION_STRING}/proshop`,
+            `${process.env.DB_CONNECTION_STRING}/proshop`,
             {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
