@@ -1,5 +1,8 @@
 import express from "express";
-import { getAll, getById } from "../controllers/product.controller.js";
+import {
+    getProductList,
+    getProductDetails,
+} from "../controllers/product.controller.js";
 
 const router = express.Router();
 
@@ -8,8 +11,7 @@ const router = express.Router();
  * @access      public
  */
 
-router.get("/", getAll);
-router.get("/:id", getById);
-
+router.get("/", getProductList);
+router.get("/:id", getProductDetails);
 
 export default router;
