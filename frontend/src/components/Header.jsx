@@ -62,7 +62,7 @@ const Header = () => {
                             <LinkContainer to="/cart">
                                 <Nav.Link>
                                     {cartItems.length > 0 && (
-                                        <Badge variant="danger" className="rounded">
+                                        <Badge pill variant="danger">
                                             {cartItems.length}
                                         </Badge>
                                     )}
