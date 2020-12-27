@@ -73,14 +73,7 @@ const Header = () => {
                             <LinkContainer to="/cart">
                                 <Nav.Link>
                                     {cartItems.length > 0 && (
-<<<<<<< HEAD
-                                        <Badge
-                                            variant="danger"
-                                            className="rounded"
-                                        >
-=======
                                         <Badge pill variant="danger">
->>>>>>> frontend
                                             {cartItems.length}
                                         </Badge>
                                     )}
