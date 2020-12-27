@@ -107,7 +107,7 @@ const Header = () => {
                                 </NavDropdown>
                             ) : (
                                 <React.Fragment>
-                                    <LinkContainer to="/signup">
+                                    <LinkContainer to="/register">
                                         <Nav.Link>
                                             <i className="fas fa-user-plus px-1"></i>
                                             register
