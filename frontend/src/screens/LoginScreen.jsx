@@ -34,7 +34,7 @@ const LoginScreen = ({ location, history }) => {
                         <Form.Label>Email Address</Form.Label>
                         <Form.Control
                             type="email"
-                            placeholder="ex : john-ash@example.com"
+                            placeholder="Example:  john-ash@example.com"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             autoComplete
@@ -45,7 +45,7 @@ const LoginScreen = ({ location, history }) => {
                         <Form.Label>Password</Form.Label>
                         <Form.Control
                             type="password"
-                            placeholder="ex : e&3Ap5Le46"
+                            placeholder="Example:  e&3Ap5Le46"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         ></Form.Control>
