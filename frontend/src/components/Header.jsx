@@ -1,11 +1,22 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Navbar, Nav, NavDropdown, Container, Badge } from "react-bootstrap";
 import logo from "../logo.svg";
 import { LinkContainer } from "react-router-bootstrap";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getCurrentUser } from "../getUserInfo";
+import { logout } from "../actions/userActions";
 
 const Header = () => {
+    const [user, setUser] = useState({});
+    const dispatch = useDispatch();
     const { cartItems } = useSelector((state) => state.cart);
+    useEffect(() => {
+        setUser(getCurrentUser(localStorage.getItem("token")));
+    }, []);
+    const logoutHandler = () => {
+        dispatch(logout());
+        window.location = "/";
+    };
     return (
         <header>
             <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
@@ -62,7 +73,10 @@ const Header = () => {
                             <LinkContainer to="/cart">
                                 <Nav.Link>
                                     {cartItems.length > 0 && (
-                                        <Badge variant="danger" className="rounded">
+                                        <Badge
+                                            variant="danger"
+                                            className="rounded"
+                                        >
                                             {cartItems.length}
                                         </Badge>
                                     )}
@@ -70,18 +84,39 @@ const Header = () => {
                                     cart
                                 </Nav.Link>
                             </LinkContainer>
-                            <LinkContainer to="/signup">
-                                <Nav.Link>
-                                    <i className="fas fa-user-plus px-1"></i>
-                                    register
-                                </Nav.Link>
-                            </LinkContainer>
-                            <LinkContainer to="/login">
-                                <Nav.Link>
-                                    <i className="fas fa-sign-in-alt px-1"></i>
-                                    login
-                                </Nav.Link>
-                            </LinkContainer>
+
+                            {user ? (
+                                <NavDropdown
+                                    title={`Hi ${user.name}`}
+                                    id="collasible-nav-dropdown"
+                                >
+                                    <LinkContainer to="/profile">
+                                        <NavDropdown.Item>
+                                            <i className="far fa-user px-1"></i>
+                                            Profile
+                                        </NavDropdown.Item>
+                                    </LinkContainer>
+                                    <NavDropdown.Item onClick={logoutHandler}>
+                                        <i className="fas fa-sign-out-alt px-1"></i>
+                                        Logout
+                                    </NavDropdown.Item>
+                                </NavDropdown>
+                            ) : (
+                                <React.Fragment>
+                                    <LinkContainer to="/signup">
+                                        <Nav.Link>
+                                            <i className="fas fa-user-plus px-1"></i>
+                                            register
+                                        </Nav.Link>
+                                    </LinkContainer>
+                                    <LinkContainer to="/login">
+                                        <Nav.Link>
+                                            <i className="fas fa-sign-in-alt px-1"></i>
+                                            login
+                                        </Nav.Link>
+                                    </LinkContainer>
+                                </React.Fragment>
+                            )}
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
