@@ -13,7 +13,7 @@ const RegisterScreen = ({ location, history }) => {
     const [confirmPassword, setConfirmPassword] = useState("");
     const redirect = location.search ? location.search.split("=")[1] : "/";
     const dispatch = useDispatch();
-    const { loading, errors, token } = useSelector(
+    const { loading, error, token } = useSelector(
         (state) => state.userRegister
     );
     const [problem, setProblem] = useState("");
@@ -36,9 +36,9 @@ const RegisterScreen = ({ location, history }) => {
         <FormContainer>
             <Card className="p-5">
                 <h1 className="text-secondary">Sign Up</h1>
-                {errors ||
+                {error ||
                     (problem && (
-                        <Alert variant="danger">{errors || problem}</Alert>
+                        <Alert variant="danger">{error || problem}</Alert>
                     ))}
                 {loading && <Loader />}
                 <Form onSubmit={submitHandler}>

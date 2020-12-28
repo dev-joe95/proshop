@@ -11,7 +11,7 @@ const LoginScreen = ({ location, history }) => {
     const [password, setPassword] = useState("");
     const redirect = location.search ? location.search.split("=")[1] : "/";
     const dispatch = useDispatch();
-    const { loading, errors, token } = useSelector((state) => state.userLogin);
+    const { loading, error, token } = useSelector((state) => state.userLogin);
 
     useEffect(() => {
         if (token) {
@@ -27,7 +27,7 @@ const LoginScreen = ({ location, history }) => {
         <FormContainer>
             <Card className="p-5">
                 <h1 className="text-secondary">Sign In</h1>
-                {errors && <Alert variant="danger">{errors}</Alert>}
+                {error && <Alert variant="danger">{error}</Alert>}
                 {loading && <Loader />}
                 <Form onSubmit={submitHandler}>
                     <Form.Group>
