@@ -23,7 +23,7 @@ router.post("/login", authUser);
  * @url         /api/user/me
  * @access      private
  */
-router.get("/me", protect, getUserProfile);
+router.get("/profile", protect, getUserProfile);
 /**
  * @description Update User profile route
  * @method      PUT
