@@ -59,6 +59,32 @@ export const register = (name, email, password) => async (dispatch) => {
         });
     }
 };
+export const getUserDetails = (id) => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: "USER_DETAILS_REQUEST",
+        });
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${getState().userLogin.token}`,
+            },
+        };
+        const { data } = await axios.get(`/api/user/${id}`, config);
+        dispatch({
+            type: "USER_DETAILS_SUCCESS",
+            payload: data,
+        });
+    } catch (error) {
+        dispatch({
+            type: "USER_DETAILS_FAIL",
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+    }
+};
 export const logout = () => async (dispatch) => {
     localStorage.removeItem("token");
     dispatch({
