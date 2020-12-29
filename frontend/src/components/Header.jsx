@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Navbar, Nav, NavDropdown, Container, Badge } from "react-bootstrap";
+import {
+    Navbar,
+    Nav,
+    NavDropdown,
+    Container,
+    Badge,
+    FormControl,
+    Row,
+    Col,
+} from "react-bootstrap";
 import logo from "../logo.svg";
 import { LinkContainer } from "react-router-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -39,8 +48,8 @@ const Header = () => {
                             <LinkContainer to="/products">
                                 <Nav.Link>products</Nav.Link>
                             </LinkContainer>
-                            <LinkContainer to="/categories">
-                                <Nav.Link>categories</Nav.Link>
+                            <LinkContainer to="/sale">
+                                <Nav.Link>sale</Nav.Link>
                             </LinkContainer>
                             <NavDropdown
                                 title="categories"
@@ -69,7 +78,16 @@ const Header = () => {
                                 </LinkContainer>
                             </NavDropdown>
                         </Nav>
-                        <Nav>
+                        <Row>
+                            <Col>
+                                <FormControl
+                                    type="search"
+                                    placeholder="Search"
+                                ></FormControl>
+                            </Col>
+                        </Row>
+
+                        <Nav className="ml-auto">
                             <LinkContainer to="/cart">
                                 <Nav.Link>
                                     {cartItems.length > 0 && (
