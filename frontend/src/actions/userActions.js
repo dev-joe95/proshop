@@ -85,6 +85,33 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
         });
     }
 };
+export const updateUserProfile = (id, user) => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: "USER_UPDATE_PROFILE_REQUEST",
+        });
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${getState().userLogin.token}`,
+            },
+        };
+        const { data } = await axios.put(`/api/user/${id}`, user, config);
+        dispatch({
+            type: "USER_UPDATE_PROFILE_SUCCESS",
+            payload: data,
+        });
+        localStorage.setItem("token", data.token);
+    } catch (error) {
+        dispatch({
+            type: "USER_UPDATE_PROFILE_FAIL",
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+    }
+};
 export const logout = () => async (dispatch) => {
     localStorage.removeItem("token");
     dispatch({
