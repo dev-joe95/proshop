@@ -3,9 +3,9 @@ import React, { useState, useEffect } from "react";
 import { Form, Button, Row, Col, Alert } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../components/Loader";
-import { getUserDetails } from "../actions/userActions";
+import { getUserDetails, updateUserProfile } from "../actions/userActions";
 
-const ProfileScreen = ({ location, history }) => {
+const ProfileScreen = ({ history }) => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -14,6 +14,7 @@ const ProfileScreen = ({ location, history }) => {
     const dispatch = useDispatch();
     const { token } = useSelector((state) => state.userLogin);
     const { loading, error, user } = useSelector((state) => state.userDetails);
+    const { success } = useSelector((state) => state.userUpdateProfile);
     console.log("====================================");
     console.log(user);
     console.log("====================================");
@@ -32,8 +33,8 @@ const ProfileScreen = ({ location, history }) => {
     const submitHandler = (e) => {
         e.preventDefault();
         if (password === confirmPassword) {
+            dispatch(updateUserProfile("profile", { name, email, password }));
             setProblem("");
-            // dispatch(getUserDetails("profile"));
         } else {
             setProblem("Password do not match");
         }
@@ -42,10 +43,15 @@ const ProfileScreen = ({ location, history }) => {
         <Row>
             <Col md={3}>
                 <h2>User profile</h2>
-                {error ||
-                    (problem && (
-                        <Alert variant="danger">{error || problem}</Alert>
-                    ))}
+                {error && !success && (
+                    <Alert variant="danger">{error || problem}</Alert>
+                )}
+                {problem && !success && (
+                    <Alert variant="danger">{error || problem}</Alert>
+                )}
+                {!error && !problem && success && (
+                    <Alert variant="success">Profile has been updated</Alert>
+                )}
                 {loading && <Loader />}
                 <Form onSubmit={submitHandler}>
                     <Form.Group>
