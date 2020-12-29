@@ -5,7 +5,7 @@ const getProductList = asyncHandler(async (req, res) => {
     await Product.find({}, (err, product) => {
         if (err) res.status(400).send(err);
         res.json(product);
-    }).sort("name");
+    }).sort("-updatedAt");
 });
 
 const getProductDetails = asyncHandler(async (req, res) => {
