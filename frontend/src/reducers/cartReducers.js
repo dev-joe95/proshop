@@ -1,5 +1,5 @@
 export const cartReducer = (
-    state = { cartItems: [], shippingAddress: {} },
+    state = { cartItems: [], shippingAddress: {}, paymentMethod: {} },
     action
 ) => {
     switch (action.type) {
@@ -31,7 +31,12 @@ export const cartReducer = (
         case "CART_SAVE_SHIPPING_ADDRESS":
             return {
                 ...state,
-                cartItems: action.payload,
+                shippingAddress: action.payload,
+            };
+        case "CART_SAVE_PAYMENT_METHOD":
+            return {
+                ...state,
+                paymentMethod: action.payload,
             };
         default:
             return state;
