@@ -18,26 +18,15 @@ const CartScreen = ({ match, location, history }) => {
     const qty = location.search ? Number(location.search.split("=")[1]) : 1;
     const dispatch = useDispatch();
     const { cartItems } = useSelector((state) => state.cart);
-    const [tax, setTax] = useState(0);
-    const [shipping, setShipping] = useState(0);
+
     const [total, setTotal] = useState(0);
-    const taxRate = 14 / 100;
-    const shippingRate = 5 / 100;
+
     useEffect(() => {
         if (productId) {
             dispatch(addToCart(productId, qty));
         }
         setTotal(cartItems.reduce((acc, i) => acc + i.qty * i.price, 0));
-        setTax(
-            cartItems.reduce((acc, i) => acc + i.qty * i.price * taxRate, 0)
-        );
-        setShipping(
-            cartItems.reduce(
-                (acc, i) => acc + i.qty * i.price * shippingRate,
-                0
-            )
-        );
-    }, [dispatch, productId, qty, cartItems, taxRate, shippingRate]);
+    }, [dispatch, productId, qty, cartItems]);
     const removeFromCartHandler = (id) => {
         dispatch(removeFromCart(id));
     };
@@ -144,40 +133,9 @@ const CartScreen = ({ match, location, history }) => {
                                 <Row>
                                     <Col>
                                         <i class="fas fa-money-bill-wave mr-1"></i>
-                                        Total:
+                                        Price:
                                     </Col>
                                     <Col>${total.toFixed(2)}</Col>
-                                </Row>
-                            </ListGroup.Item>
-                            <ListGroup.Item>
-                                <Row>
-                                    <Col>
-                                        <i class="fas fa-coins mr-1"></i>Tax:
-                                    </Col>
-                                    <Col>${tax.toFixed(2)}</Col>
-                                </Row>
-                            </ListGroup.Item>
-                            <ListGroup.Item>
-                                <Row>
-                                    <Col>
-                                        <i class="fas fa-shipping-fast mr-1"></i>
-                                        Shipping:
-                                    </Col>
-                                    <Col>${shipping.toFixed(2)}</Col>
-                                </Row>
-                            </ListGroup.Item>
-                            <ListGroup.Item>
-                                <Row>
-                                    <Col>
-                                        <i class="fas fa-file-invoice-dollar mr-1"></i>
-                                        Total price:
-                                    </Col>
-                                    <Col>
-                                        $
-                                        {Math.ceil(
-                                            total + tax + shipping
-                                        ).toFixed(2)}
-                                    </Col>
                                 </Row>
                             </ListGroup.Item>
                             <ListGroup.Item>
