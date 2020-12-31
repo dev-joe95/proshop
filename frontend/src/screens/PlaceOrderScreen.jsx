@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
     Row,
     Col,
@@ -11,20 +11,44 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import CheckoutSteps from "../components/CheckoutSteps";
 import { Link } from "react-router-dom";
+import { createOrder } from "../actions/orderActions";
 
 const PlaceOrderScreen = ({ history }) => {
     const addDecimals = (num) => {
         return (Math.round(num * 100) / 100).toFixed(2);
     };
-    const { shippingAddress, paymentMethod, cartItems } = useSelector(
-        (state) => state.cart
-    );
-    const itemsPrice = addDecimals(
+    const dispatch = useDispatch();
+    const cart = useSelector((state) => state.cart);
+    const { shippingAddress, paymentMethod, cartItems } = cart;
+    cart.itemsPrice = addDecimals(
         cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
     );
-    const shippingPrice = itemsPrice > 1000 ? 0 : 100;
-    const taxPrice = addDecimals(Number((0.15 * itemsPrice).toFixed(2)));
-    const placeOrderHandler = () => {};
+    cart.shippingPrice = Number(cart.itemsPrice > 1000 ? 0 : 100);
+    cart.taxPrice = addDecimals(Number((0.15 * cart.itemsPrice).toFixed(2)));
+    cart.totalPrice = (
+        Number(cart.itemsPrice) +
+        Number(cart.shippingPrice) +
+        Number(cart.taxPrice)
+    ).toFixed(2);
+    const { order, success, error } = useSelector((state) => state.orderCreate);
+    useEffect(() => {
+        if (success) {
+            history.push(`/order/${order._id}`);
+        }
+    }, [history, success, order]);
+    const placeOrderHandler = () => {
+        dispatch(
+            createOrder({
+                orderItems: cartItems,
+                shippingAddress: shippingAddress,
+                paymentMethod: paymentMethod,
+                itemsPrice: cart.itemsPrice,
+                taxPrice: cart.taxPrice,
+                shippingPrice: cart.shippingPrice,
+                totalPrice: cart.totalPrice,
+            })
+        );
+    };
     return (
         <React.Fragment>
             <CheckoutSteps step1 step2 step3 step4 />
@@ -98,7 +122,7 @@ const PlaceOrderScreen = ({ history }) => {
                                         <i class="fas fa-money-bill-wave mr-1"></i>
                                         Total:
                                     </Col>
-                                    <Col>${itemsPrice}</Col>
+                                    <Col>${cart.itemsPrice}</Col>
                                 </Row>
                             </ListGroup.Item>
                             <ListGroup.Item>
@@ -106,7 +130,7 @@ const PlaceOrderScreen = ({ history }) => {
                                     <Col>
                                         <i class="fas fa-coins mr-1"></i>Tax:
                                     </Col>
-                                    <Col>${shippingPrice}</Col>
+                                    <Col>${cart.shippingPrice}</Col>
                                 </Row>
                             </ListGroup.Item>
                             <ListGroup.Item>
@@ -115,7 +139,7 @@ const PlaceOrderScreen = ({ history }) => {
                                         <i class="fas fa-shipping-fast mr-1"></i>
                                         Shipping:
                                     </Col>
-                                    <Col>${taxPrice}</Col>
+                                    <Col>${cart.taxPrice}</Col>
                                 </Row>
                             </ListGroup.Item>
                             <ListGroup.Item>
@@ -124,9 +148,7 @@ const PlaceOrderScreen = ({ history }) => {
                                         <i class="fas fa-file-invoice-dollar mr-1"></i>
                                         Total price:
                                     </Col>
-                                    <Col>
-                                        ${itemsPrice + shippingPrice + taxPrice}
-                                    </Col>
+                                    <Col>${cart.totalPrice}</Col>
                                 </Row>
                             </ListGroup.Item>
                             <ListGroup.Item>
@@ -142,6 +164,12 @@ const PlaceOrderScreen = ({ history }) => {
                             </ListGroup.Item>
                         </ListGroup>
                     </Card>
+                    {error && <Alert variant="danger">{error}</Alert>}
+                    {success && (
+                        <Alert variant="success">
+                            Your order has been created
+                        </Alert>
+                    )}
                 </Col>
             </Row>
         </React.Fragment>
