@@ -1,6 +1,9 @@
 import express from "express";
 import protect from "../middleware/auth.js";
-import { addOrderItems } from "../controllers/order.controller.js";
+import {
+    addOrderItems,
+    getOrderDetails,
+} from "../controllers/order.controller.js";
 
 const router = express.Router();
 
@@ -18,6 +21,6 @@ router.post("/", protect, addOrderItems);
  * @url         /api/order/<id>
  * @access      private
  */
-router.post("/:id", protect, addOrderItems);
+router.get("/:id", protect, getOrderDetails);
 
 export default router;
