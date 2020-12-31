@@ -12,4 +12,12 @@ const router = express.Router();
  */
 router.post("/", protect, addOrderItems);
 
+/**
+ * @description Gey order by id
+ * @method      GET
+ * @url         /api/order/<id>
+ * @access      private
+ */
+router.post("/:id", protect, addOrderItems);
+
 export default router;
