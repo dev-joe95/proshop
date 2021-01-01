@@ -3,6 +3,7 @@ import protect from "../middleware/auth.js";
 import {
     addOrderItems,
     getOrderDetails,
+    updateOrderToPaid,
 } from "../controllers/order.controller.js";
 
 const router = express.Router();
@@ -22,5 +23,13 @@ router.post("/", protect, addOrderItems);
  * @access      private
  */
 router.get("/:id", protect, getOrderDetails);
+
+/**
+ * @description Update order to paid
+ * @method      PUT
+ * @url         /api/order/<id>/pay
+ * @access      private
+ */
+router.put("/:id/pay", protect, updateOrderToPaid);
 
 export default router;

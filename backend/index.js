@@ -6,7 +6,7 @@ import routes from "./startup/routes.js";
 
 dotenv.config();
 /**
- * Calling mongodb connetion
+ * Calling mongodb connection
  */
 db();
 const app = express();
