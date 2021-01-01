@@ -37,7 +37,6 @@ const LoginScreen = ({ location, history }) => {
                             placeholder="Example:  john-ash@example.com"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            autoComplete
                             autoFocus
                         ></Form.Control>
                     </Form.Group>

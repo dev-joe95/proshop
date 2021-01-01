@@ -49,7 +49,6 @@ const RegisterScreen = ({ location, history }) => {
                             placeholder="Example:  John Ash"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
-                            autoComplete
                             autoFocus
                         ></Form.Control>
                     </Form.Group>
