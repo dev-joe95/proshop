@@ -11,6 +11,9 @@ export default function (app) {
     app.use("/api/user", userRouter);
     app.use("/api/product", productRouter);
     app.use("/api/order", orderRouter);
+    app.get("/api/config/paypal", (req, res) => {
+        res.send(process.env.PAYPAL_CLIENT_ID);
+    });
     /**
      ** Creating  custom error handler
      */
