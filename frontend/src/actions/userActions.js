@@ -1,4 +1,18 @@
 import axios from "axios";
+
+export const logout = () => async (dispatch) => {
+    localStorage.removeItem("token");
+    dispatch({
+        type: "USER_LOGOUT",
+    });
+    dispatch({
+        type: "SER_DETAILS_RESET",
+    });
+    dispatch({
+        type: "ORDER_LIST_MY_RESET",
+    });
+};
+
 export const login = (email, password) => async (dispatch) => {
     try {
         dispatch({
@@ -111,10 +125,4 @@ export const updateUserProfile = (id, user) => async (dispatch, getState) => {
                     : error.message,
         });
     }
-};
-export const logout = () => async (dispatch) => {
-    localStorage.removeItem("token");
-    dispatch({
-        type: "USER_LOGOUT",
-    });
 };
