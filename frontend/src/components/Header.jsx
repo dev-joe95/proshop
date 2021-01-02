@@ -24,7 +24,7 @@ const Header = () => {
     }, []);
     const logoutHandler = () => {
         dispatch(logout());
-        window.location = "/";
+        window.location = "/login";
     };
     return (
         <header>
