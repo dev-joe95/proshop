@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 // import { Link } from "react-router-dom";
-import { Form, Button, Row, Col, Alert } from "react-bootstrap";
+import { Form, Button, Row, Col, Alert, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../components/Loader";
 import { getUserDetails, updateUserProfile } from "../actions/userActions";
+import { listMyOrders } from "../actions/orderActions";
+import { LinkContainer } from "react-router-bootstrap";
 
 const ProfileScreen = ({ history }) => {
     const [name, setName] = useState("");
@@ -15,21 +17,23 @@ const ProfileScreen = ({ history }) => {
     const { token } = useSelector((state) => state.userLogin);
     const { loading, error, user } = useSelector((state) => state.userDetails);
     const { success } = useSelector((state) => state.userUpdateProfile);
-    console.log("====================================");
-    console.log(user);
-    console.log("====================================");
+    const { loading: loadingOrders, error: errorOrders, orders } = useSelector(
+        (state) => state.orderListMy
+    );
     useEffect(() => {
         if (token) {
-            if (user.name) {
+            if (!user || !user.name || success) {
+                dispatch({ type: "USER_UPDATE_PROFILE_RESET" });
+                dispatch(getUserDetails("profile"));
+                dispatch(listMyOrders());
+            } else {
                 setName(user.name);
                 setEmail(user.email);
-            } else {
-                dispatch(getUserDetails("profile"));
             }
         } else {
             history.push("/login");
         }
-    }, [dispatch, history, user, token]);
+    }, [dispatch, history, user, token, success]);
     const submitHandler = (e) => {
         e.preventDefault();
         if (password === confirmPassword) {
@@ -97,7 +101,72 @@ const ProfileScreen = ({ history }) => {
             </Col>
 
             <Col md={9}>
-                <h2>My orders</h2>
+                <h2>My Orders</h2>
+                {loadingOrders ? (
+                    <Loader />
+                ) : errorOrders ? (
+                    <Alert variant="danger">{errorOrders}</Alert>
+                ) : (
+                    <Table
+                        striped
+                        bordered
+                        hover
+                        responsive
+                        className="table-sm"
+                    >
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>DATE</th>
+                                <th>TOTAL</th>
+                                <th>PAID</th>
+                                <th>DELIVERED</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {orders.map((order, index) => (
+                                <tr key={index}>
+                                    <td>{order._id}</td>
+                                    <td>{order.createdAt.substring(0, 10)}</td>
+                                    <td>{order.totalPrice}</td>
+                                    <td>
+                                        {order.isPaid ? (
+                                            order.paidAt.substring(0, 10)
+                                        ) : (
+                                            <i
+                                                className="fas fa-times"
+                                                style={{ color: "red" }}
+                                            ></i>
+                                        )}
+                                    </td>
+                                    <td>
+                                        {order.isDelivered ? (
+                                            order.deliveredAt.substring(0, 10)
+                                        ) : (
+                                            <i
+                                                className="fas fa-times"
+                                                style={{ color: "red" }}
+                                            ></i>
+                                        )}
+                                    </td>
+                                    <td>
+                                        <LinkContainer
+                                            to={`/order/${order._id}`}
+                                        >
+                                            <Button
+                                                className="btn-sm"
+                                                variant="dark"
+                                            >
+                                                Details
+                                            </Button>
+                                        </LinkContainer>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table>
+                )}
             </Col>
         </Row>
     );
