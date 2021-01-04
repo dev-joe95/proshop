@@ -116,7 +116,7 @@ const ProfileScreen = ({ history }) => {
                     >
                         <thead>
                             <tr>
-                                <th>ID</th>
+                                <th>Order No.</th>
                                 <th>DATE</th>
                                 <th>TOTAL</th>
                                 <th>PAID</th>
