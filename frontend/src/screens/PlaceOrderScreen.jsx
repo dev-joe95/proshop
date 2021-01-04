@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import CheckoutSteps from "../components/CheckoutSteps";
 import { Link } from "react-router-dom";
 import { createOrder } from "../actions/orderActions";
+import { emptyCart } from "../actions/cartActions";
 
 const PlaceOrderScreen = ({ history }) => {
     const addDecimals = (num) => {
@@ -33,9 +34,10 @@ const PlaceOrderScreen = ({ history }) => {
     const { order, success, error } = useSelector((state) => state.orderCreate);
     useEffect(() => {
         if (success) {
+            dispatch(emptyCart());
             history.push(`/order/${order._id}`);
         }
-    }, [history, success, order]);
+    }, [history, success, order, dispatch]);
     const placeOrderHandler = () => {
         dispatch(
             createOrder({
