@@ -27,6 +27,15 @@ export const removeFromCart = (id) => async (dispatch, getState) => {
         JSON.stringify(getState().cart.cartItems)
     );
 };
+export const emptyCart = () => async (dispatch, getState) => {
+    dispatch({
+        type: "CART_RESET_ITEM",
+    });
+    localStorage.removeItem("cartItems");
+    localStorage.removeItem("__paypal_storage__");
+    localStorage.removeItem("paymentMethod");
+    localStorage.removeItem("shippingAddress");
+};
 export const saveShippingAddress = (data) => async (dispatch, getState) => {
     dispatch({
         type: "CART_SAVE_SHIPPING_ADDRESS",
