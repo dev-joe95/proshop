@@ -6,11 +6,12 @@ export const logout = () => async (dispatch) => {
         type: "USER_LOGOUT",
     });
     dispatch({
-        type: "SER_DETAILS_RESET",
+        type: "USER_DETAILS_RESET",
     });
     dispatch({
         type: "ORDER_LIST_MY_RESET",
     });
+    dispatch({ type: "USER_LIST_RESET" });
 };
 
 export const login = (email, password) => async (dispatch) => {
@@ -119,6 +120,31 @@ export const updateUserProfile = (id, user) => async (dispatch, getState) => {
     } catch (error) {
         dispatch({
             type: "USER_UPDATE_PROFILE_FAIL",
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+    }
+};
+export const listUsers = () => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: "USER_LIST_REQUEST",
+        });
+        const config = {
+            headers: {
+                Authorization: `Bearer ${getState().userLogin.token}`,
+            },
+        };
+        const { data } = await axios.get(`/api/user`, config);
+        dispatch({
+            type: "USER_LIST_SUCCESS",
+            payload: data,
+        });
+    } catch (error) {
+        dispatch({
+            type: "USER_LIST_FAIL",
             payload:
                 error.response && error.response.data.message
                     ? error.response.data.message
