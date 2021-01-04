@@ -1,9 +1,6 @@
 import React from "react";
-import { Container } from "react-bootstrap";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import "./App.css";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
 import HomeScreen from "./screens/HomeScreen";
 import ProductScreen from "./screens/ProductScreen";
 import CartScreen from "./screens/CartScreen";
@@ -14,31 +11,27 @@ import ShippingScreen from "./screens/ShippingScreen";
 import PaymentScreen from "./screens/PaymentScreen";
 import PlaceOrderScreen from "./screens/PlaceOrderScreen";
 import OrderScreen from "./screens/OrderScreen";
+import UserListScreen from "./screens/UserListScreen";
+import AdminRoute from "./routes/AdminRoute";
+import DefaultRoute from "./routes/DefaultRoute";
 
 function App() {
     return (
         <React.Fragment>
             <BrowserRouter>
-                <Header />
-                <Container>
-                    <main className="py-4">
-                        <Route path="/order/:id" component={OrderScreen} />
-                        <Route
-                            path="/placeorder"
-                            component={PlaceOrderScreen}
-                        />
-                        <Route path="/payment" component={PaymentScreen} />
-                        <Route path="/shipping" component={ShippingScreen} />
-                        <Route path="/profile" component={ProfileScreen} />
-                        <Route path="/register" component={RegisterScreen} />
-                        <Route path="/login" component={LoginScreen} />
-                        <Route path="/cart/:id?" component={CartScreen} />
-                        <Route path="/product/:id" component={ProductScreen} />
-                        <Route path="/products" component={HomeScreen} exact />
-                        <Route path="/" component={HomeScreen} exact />
-                    </main>
-                </Container>
-                <Footer />
+                <AdminRoute path="/admin/users" component={UserListScreen} />
+                <AdminRoute path="/dashboard" component={UserListScreen} />
+                <DefaultRoute path="/order/:id" component={OrderScreen} />
+                <DefaultRoute path="/placeorder" component={PlaceOrderScreen} />
+                <DefaultRoute path="/payment" component={PaymentScreen} />
+                <DefaultRoute path="/shipping" component={ShippingScreen} />
+                <DefaultRoute path="/profile" component={ProfileScreen} />
+                <DefaultRoute path="/register" component={RegisterScreen} />
+                <DefaultRoute path="/login" component={LoginScreen} />
+                <DefaultRoute path="/cart/:id?" component={CartScreen} />
+                <DefaultRoute path="/product/:id" component={ProductScreen} />
+                <DefaultRoute path="/products" component={HomeScreen} exact />
+                <DefaultRoute path="/" component={HomeScreen} exact />
             </BrowserRouter>
         </React.Fragment>
     );
