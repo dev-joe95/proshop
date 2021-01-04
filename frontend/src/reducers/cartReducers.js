@@ -28,6 +28,11 @@ export const cartReducer = (
                     (i) => i.product !== action.payload
                 ),
             };
+        case "CART_RESET_ITEM":
+            return {
+                ...state,
+                cartItems: []
+            };
         case "CART_SAVE_SHIPPING_ADDRESS":
             return {
                 ...state,
