@@ -105,6 +105,14 @@ const Header = () => {
                                     title={`Hi ${user.name}`}
                                     id="collasible-nav-dropdown"
                                 >
+                                    {user.isAdmin && (
+                                        <LinkContainer to="/admin">
+                                            <NavDropdown.Item>
+                                                <i className="fas fa-tachometer-alt px-1"></i>
+                                                Dashboard
+                                            </NavDropdown.Item>
+                                        </LinkContainer>
+                                    )}
                                     <LinkContainer to="/profile">
                                         <NavDropdown.Item>
                                             <i className="far fa-user px-1"></i>
