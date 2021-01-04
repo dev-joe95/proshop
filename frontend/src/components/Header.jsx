@@ -106,7 +106,7 @@ const Header = () => {
                                     id="collasible-nav-dropdown"
                                 >
                                     {user.isAdmin && (
-                                        <LinkContainer to="/admin">
+                                        <LinkContainer to="/dashboard">
                                             <NavDropdown.Item>
                                                 <i className="fas fa-tachometer-alt px-1"></i>
                                                 Dashboard
