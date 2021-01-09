@@ -152,3 +152,28 @@ export const listUsers = () => async (dispatch, getState) => {
         });
     }
 };
+export const deleteUser = (id) => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: "USER_DELETE_REQUEST",
+        });
+        const config = {
+            headers: {
+                Authorization: `Bearer ${getState().userLogin.token}`,
+            },
+        };
+        const { data } = await axios.delete(`/api/user/${id}`, config);
+        dispatch({
+            type: "USER_DELETE_SUCCESS",
+            payload: data,
+        });
+    } catch (error) {
+        dispatch({
+            type: "USER_DELETE_FAIL",
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+    }
+};
