@@ -1,6 +1,7 @@
 import express from "express";
 import {
     authUser,
+    deleteUser,
     getUserProfile,
     getUsers,
     registerUser,
@@ -10,9 +11,9 @@ import { admin, protect } from "../middleware/auth.js";
 
 const router = express.Router();
 /**
- * @description User authentication route
  * @method      POST
  * @url         /api/user/login
+ * @description User authentication route
  * @access      public
  */
 router.post("/login", authUser);
@@ -44,5 +45,11 @@ router.post("/", registerUser);
  * @access      private/Admin
  */
 router.get("/", protect, admin, getUsers);
-
+/**
+ * @description Delete users for admin
+ * @method      DELETE
+ * @url         /api/user/<id>
+ * @access      private/Admin
+ */
+router.delete("/:id", protect, admin, deleteUser);
 export default router;
