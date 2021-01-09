@@ -2,9 +2,11 @@ import express from "express";
 import {
     authUser,
     deleteUser,
+    getUserById,
     getUserProfile,
     getUsers,
     registerUser,
+    updateUser,
     updateUserProfile,
 } from "../controllers/user.controller.js";
 import { admin, protect } from "../middleware/auth.js";
@@ -52,4 +54,18 @@ router.get("/", protect, admin, getUsers);
  * @access      private/Admin
  */
 router.delete("/:id", protect, admin, deleteUser);
+/**
+ * @description Get user by id for admin
+ * @method      GET
+ * @url         /api/user/<id>
+ * @access      private/Admin
+ */
+router.get("/:id", protect, admin, getUserById);
+/**
+ * @description Update user by admin
+ * @method      PUT
+ * @url         /api/user/<id>
+ * @access      private/Admin
+ */
+router.put("/:id", protect, admin, updateUser);
 export default router;
