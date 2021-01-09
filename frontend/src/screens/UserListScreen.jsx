@@ -2,16 +2,21 @@ import React, { useEffect } from "react";
 import { LinkContainer } from "react-router-bootstrap";
 import { Table, Button, Alert } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { listUsers } from "../actions/userActions";
+import { deleteUser, listUsers } from "../actions/userActions";
 import Loader from "../components/Loader";
 
 const UserListScreen = () => {
     const dispatch = useDispatch();
     const { loading, users, error } = useSelector((state) => state.userList);
+    const { success: successDelete } = useSelector((state) => state.userDelete);
     useEffect(() => {
         dispatch(listUsers());
-    }, [dispatch]);
-    const deleteHandler = (id) => {};
+    }, [dispatch, successDelete]);
+    const deleteHandler = (id) => {
+        if (window.confirm("Are you sure")) {
+            dispatch(deleteUser(id));
+        }
+    };
     return (
         <React.Fragment>
             <h1>Users</h1>
@@ -56,7 +61,7 @@ const UserListScreen = () => {
                                                 variant="info"
                                                 className="btn-sm"
                                             >
-                                                <i class="fas fa-edit"></i>
+                                                <i className="fas fa-edit"></i>
                                             </Button>
                                         </LinkContainer>
                                         <Button
@@ -66,7 +71,7 @@ const UserListScreen = () => {
                                                 deleteHandler(user._id)
                                             }
                                         >
-                                            <i class="fas fa-trash"></i>
+                                            <i className="fas fa-trash"></i>
                                         </Button>
                                     </td>
                                 </tr>
