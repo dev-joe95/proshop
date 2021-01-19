@@ -64,3 +64,30 @@ export const deleteCategory = (id) => async (dispatch, getState) => {
         });
     }
 };
+
+export const createCategory = () => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: "CATEGORY_CREATE_REQUEST",
+        });
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${getState().userLogin.token}`,
+            },
+        };
+        const { data } = await axios.post(`/api/category`, {}, config);
+        dispatch({
+            type: "CATEGORY_CREATE_SUCCESS",
+            payload: data,
+        });
+    } catch (error) {
+        dispatch({
+            type: "CATEGORY_CREATE_FAIL",
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+    }
+};
