@@ -29,4 +29,31 @@ const deleteCategory = asyncHandler(async (req, res) => {
         throw new Error("Category not found");
     }
 });
-export { getCategoryList, getCategoryDetails ,deleteCategory};
+const createCategory = asyncHandler(async (req, res) => {
+    const category = new Category({
+        name: "Sample name",
+    });
+    const createdCategory = await product.save();
+    res.status(201).json(createdCategory);
+});
+
+const updateCategory = asyncHandler(async (req, res) => {
+    const { name } = req.body;
+    const category = await Category.findById(req.params.id);
+    if (category) {
+        category.name = name;
+
+        const updatedCategory = await category.save();
+        res.json(updatedCategory);
+    } else {
+        throw new Error("Category not found");
+        res.status(404);
+    }
+});
+export {
+    getCategoryList,
+    getCategoryDetails,
+    deleteCategory,
+    createCategory,
+    updateCategory,
+};
