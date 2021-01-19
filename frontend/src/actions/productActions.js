@@ -64,3 +64,30 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
         });
     }
 };
+
+export const createProduct = () => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: "PRODUCT_CREATE_REQUEST",
+        });
+        const config = {
+            headers: {
+                // "Content-Type": "application/json",
+                Authorization: `Bearer ${getState().userLogin.token}`,
+            },
+        };
+        const { data } = await axios.post(`/api/product`, {}, config);
+        dispatch({
+            type: "PRODUCT_CREATE_SUCCESS",
+            payload: data,
+        });
+    } catch (error) {
+        dispatch({
+            type: "PRODUCT_CREATE_FAIL",
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+    }
+};
