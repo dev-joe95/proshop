@@ -29,4 +29,4 @@ const deleteCategory = asyncHandler(async (req, res) => {
         throw new Error("Category not found");
     }
 });
-export { getCategoryList, getCategoryDetails };
+export { getCategoryList, getCategoryDetails ,deleteCategory};
