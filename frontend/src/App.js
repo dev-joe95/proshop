@@ -16,11 +16,17 @@ import AdminRoute from "./routes/AdminRoute";
 import DefaultRoute from "./routes/DefaultRoute";
 import UserEditScreen from "./screens/UserEditScreen";
 import ProductListScreen from "./screens/ProductListScreen";
+import CategoryListScreen from "./screens/CategoryListScreen";
 
 function App() {
     return (
         <React.Fragment>
             <BrowserRouter>
+                <AdminRoute
+                    path="/admin/categories"
+                    exact
+                    component={CategoryListScreen}
+                />
                 <AdminRoute
                     path="/admin/products"
                     exact
