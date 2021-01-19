@@ -33,7 +33,7 @@ const createCategory = asyncHandler(async (req, res) => {
     const category = new Category({
         name: "Sample name",
     });
-    const createdCategory = await product.save();
+    const createdCategory = await category.save();
     res.status(201).json(createdCategory);
 });
 
