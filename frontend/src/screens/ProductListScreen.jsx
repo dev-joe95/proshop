@@ -2,7 +2,11 @@ import React, { useEffect } from "react";
 import { LinkContainer } from "react-router-bootstrap";
 import { Table, Button, Row, Col, Alert } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { listProducts, deleteProduct } from "../actions/productActions";
+import {
+    listProducts,
+    deleteProduct,
+    createProduct,
+} from "../actions/productActions";
 import Loader from "../components/Loader";
 import { getCurrentUser } from "../getUserInfo";
 
@@ -17,22 +21,40 @@ const ProductListScreen = ({ history, match }) => {
         error: errorDelete,
         success: successDelete,
     } = useSelector((state) => state.productDelete);
+    const {
+        loading: loadingCreate,
+        error: errorCreate,
+        product: createdProduct,
+        success: successCreate,
+    } = useSelector((state) => state.productCreate);
+
     useEffect(() => {
+        dispatch({ type: "PRODUCT_CREATE_RESET" });
         if (token && getCurrentUser(token).isAdmin) {
             dispatch(listProducts());
         } else {
             history.push("/login");
         }
-    }, [dispatch, token, history, successDelete]);
+        if (successCreate) {
+            history.push(`/admin/products/${createdProduct._id}/edit`);
+        } else {
+            dispatch(listProducts());
+        }
+    }, [
+        dispatch,
+        token,
+        history,
+        successDelete,
+        successCreate,
+        createdProduct,
+    ]);
     const deleteHandler = (id) => {
         if (window.confirm("Are you sure")) {
             dispatch(deleteProduct(id));
         }
     };
-    const addProductHandler = (id) => {
-        if (window.confirm("Are you sure")) {
-            dispatch(deleteProduct(id));
-        }
+    const addProductHandler = () => {
+        dispatch(createProduct());
     };
     return (
         <React.Fragment>
@@ -41,16 +63,15 @@ const ProductListScreen = ({ history, match }) => {
                     <h1>Products</h1>
                 </Col>
                 <Col className="text-right">
-                    <Button
-                        className="my-3"
-                        onClick={() => addProductHandler()}
-                    >
+                    <Button className="my-3" onClick={addProductHandler}>
                         <i className="fas fa-plus mx-1"></i>Create Product
                     </Button>
                 </Col>
             </Row>
             {loadingDelete && <Loader dimension="30px" />}
             {errorDelete && <Alert variant="danger">{errorDelete}</Alert>}
+            {loadingCreate && <Loader dimension="30px" />}
+            {errorCreate && <Alert variant="danger">{errorCreate}</Alert>}
             {loading ? (
                 <Loader />
             ) : error ? (
@@ -90,7 +111,7 @@ const ProductListScreen = ({ history, match }) => {
                                         )}
                                     </td>
                                     <td>{product.rating}</td>
-                                    <td>
+                                    <td className="d-flex">
                                         <LinkContainer
                                             to={`/admin/products/${product._id}/edit`}
                                         >
