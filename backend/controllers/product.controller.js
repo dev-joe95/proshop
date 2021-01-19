@@ -39,14 +39,14 @@ const createProduct = asyncHandler(async (req, res) => {
         price: 0,
         user: req.user._id,
         image: "/images/sample.jpg",
-        brand: "Sample Name",
-        category: "Sample category",
+        brand: "Sample brand name",
+        category: "600751249f37c2f1d96268c4",
         countInStock: 0,
         numReviews: 0,
         description: "Sample description",
     });
     const createdProduct = await product.save();
-    res.status(201).json(createProduct);
+    res.status(201).json(createdProduct);
 });
 
 const updateProduct = asyncHandler(async (req, res) => {
