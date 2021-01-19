@@ -14,14 +14,27 @@ import OrderScreen from "./screens/OrderScreen";
 import UserListScreen from "./screens/UserListScreen";
 import AdminRoute from "./routes/AdminRoute";
 import DefaultRoute from "./routes/DefaultRoute";
-import UserEditScreen from './screens/UserEditScreen';
+import UserEditScreen from "./screens/UserEditScreen";
+import ProductListScreen from "./screens/ProductListScreen";
 
 function App() {
     return (
         <React.Fragment>
             <BrowserRouter>
-                <AdminRoute path="/admin/users/:id/edit" component={UserEditScreen} />
-                <AdminRoute path="/admin/users" exact component={UserListScreen} />
+                <AdminRoute
+                    path="/admin/products"
+                    exact
+                    component={ProductListScreen}
+                />
+                <AdminRoute
+                    path="/admin/users/:id/edit"
+                    component={UserEditScreen}
+                />
+                <AdminRoute
+                    path="/admin/users"
+                    exact
+                    component={UserListScreen}
+                />
                 <AdminRoute path="/dashboard" component={UserListScreen} />
                 <DefaultRoute path="/order/:id" component={OrderScreen} />
                 <DefaultRoute path="/placeorder" component={PlaceOrderScreen} />
