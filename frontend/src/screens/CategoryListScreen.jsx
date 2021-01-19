@@ -2,7 +2,11 @@ import React, { useEffect } from "react";
 import { LinkContainer } from "react-router-bootstrap";
 import { Table, Button, Row, Col, Alert } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { listCategories, deleteCategory } from "../actions/categoryActions";
+import {
+    listCategories,
+    deleteCategory,
+    createCategory,
+} from "../actions/categoryActions";
 import Loader from "../components/Loader";
 import { getCurrentUser } from "../getUserInfo";
 
@@ -17,19 +21,40 @@ const CategoryListScreen = ({ history, match }) => {
         error: errorDelete,
         success: successDelete,
     } = useSelector((state) => state.categoryDelete);
+    const {
+        loading: loadingCreate,
+        error: errorCreate,
+        category: createdCategory,
+        success: successCreate,
+    } = useSelector((state) => state.categoryCreate);
     useEffect(() => {
+        dispatch({ type: "CATEGORY_CREATE_RESET" });
         if (token && getCurrentUser(token).isAdmin) {
             dispatch(listCategories());
         } else {
             history.push("/login");
         }
-    }, [dispatch, token, history, successDelete]);
+        if (successCreate) {
+            history.push(`/admin/categories/${createdCategory._id}/edit`);
+        } else {
+            dispatch(listCategories());
+        }
+    }, [
+        dispatch,
+        token,
+        history,
+        successDelete,
+        successCreate,
+        createdCategory,
+    ]);
     const deleteHandler = (id) => {
         if (window.confirm("Are you sure")) {
             dispatch(deleteCategory(id));
         }
     };
-    const addCategoryHandler = (id) => {};
+    const addCategoryHandler = () => {
+        dispatch(createCategory());
+    };
     return (
         <React.Fragment>
             <Row className="align-items-center">
@@ -37,16 +62,15 @@ const CategoryListScreen = ({ history, match }) => {
                     <h1>Categories</h1>
                 </Col>
                 <Col className="text-right">
-                    <Button
-                        className="my-3"
-                        onClick={() => addCategoryHandler()}
-                    >
+                    <Button className="my-3" onClick={addCategoryHandler}>
                         <i className="fas fa-plus mx-1"></i>Create Category
                     </Button>
                 </Col>
             </Row>
             {loadingDelete && <Loader dimension="30px" />}
             {errorDelete && <Alert variant="danger">{errorDelete}</Alert>}
+            {loadingCreate && <Loader dimension="30px" />}
+            {errorCreate && <Alert variant="danger">{errorCreate}</Alert>}
             {loading ? (
                 <Loader />
             ) : error ? (
