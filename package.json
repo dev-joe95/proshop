@@ -1,0 +1,42 @@
+{
+  "name": "proshop",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "A simple e-commerce store app",
+  "main": "backend/index.js",
+  "scripts": {
+    "start": "node backend/index.js",
+    "dev": "nodemon backend/index.js",
+    "seed": "node backend/seeder.js",
+    "unseed": "node backend/seeder.js -d",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dev-joe95/proshop.git"
+  },
+  "keywords": [
+    "node",
+    "express",
+    "e-commerce",
+    "mongodb"
+  ],
+  "author": "Dev Joe",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dev-joe95/proshop/issues"
+  },
+  "homepage": "https://github.com/dev-joe95/proshop#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "colors": "^1.4.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-async-handler": "^1.1.4",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.11.8"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  }
+}
