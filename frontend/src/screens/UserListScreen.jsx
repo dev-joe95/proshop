@@ -59,7 +59,7 @@ const UserListScreen = ({ history }) => {
                                             <i className="fas fa-times text-danger"></i>
                                         )}
                                     </td>
-                                    <td>
+                                    <td className="d-flex">
                                         <LinkContainer
                                             to={`/admin/users/${user._id}/edit`}
                                         >

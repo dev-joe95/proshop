@@ -29,16 +29,16 @@ const ProductListScreen = ({ history, match }) => {
     } = useSelector((state) => state.productCreate);
 
     useEffect(() => {
-        dispatch({ type: "PRODUCT_CREATE_RESET" });
-        if (token && getCurrentUser(token).isAdmin) {
-            dispatch(listProducts());
-        } else {
+        // dispatch({ type: "PRODUCT_CREATE_RESET" });
+        dispatch({ type: "PRODUCT_LIST_RESET" });
+        if (!token && !getCurrentUser(token).isAdmin) {
             history.push("/login");
-        }
-        if (successCreate) {
-            history.push(`/admin/products/${createdProduct._id}/edit`);
         } else {
-            dispatch(listProducts());
+            if (successCreate) {
+                history.push(`/admin/products/${createdProduct._id}/edit`);
+            } else {
+                dispatch(listProducts());
+            }
         }
     }, [
         dispatch,

@@ -53,6 +53,7 @@ const updateProduct = asyncHandler(async (req, res) => {
     const {
         name,
         price,
+        sale,
         description,
         image,
         brand,
@@ -62,8 +63,9 @@ const updateProduct = asyncHandler(async (req, res) => {
     const product = await Product.findById(req.params.id);
     if (product) {
         product.name = name;
-        product.price = price;
         product.description = description;
+        product.price = price;
+        product.sale = sale;
         product.image = image;
         product.brand = brand;
         product.category = category;
@@ -71,8 +73,8 @@ const updateProduct = asyncHandler(async (req, res) => {
         const updatedProduct = await product.save();
         res.json(updatedProduct);
     } else {
-        throw new Error("Product not found");
         res.status(404);
+        throw new Error("Product not found");
     }
 });
 

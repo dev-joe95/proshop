@@ -29,15 +29,14 @@ const CategoryListScreen = ({ history, match }) => {
     } = useSelector((state) => state.categoryCreate);
     useEffect(() => {
         dispatch({ type: "CATEGORY_CREATE_RESET" });
-        if (token && getCurrentUser(token).isAdmin) {
-            dispatch(listCategories());
-        } else {
+        if (!token && !getCurrentUser(token).isAdmin) {
             history.push("/login");
-        }
-        if (successCreate) {
-            history.push(`/admin/categories/${createdCategory._id}/edit`);
         } else {
-            dispatch(listCategories());
+            if (successCreate) {
+                history.push(`/admin/categories/${createdCategory._id}/edit`);
+            } else {
+                dispatch(listCategories());
+            }
         }
     }, [
         dispatch,
@@ -90,7 +89,7 @@ const CategoryListScreen = ({ history, match }) => {
                                 <tr key={index}>
                                     <td>{category._id}</td>
                                     <td>{category.name}</td>
-                                    <td>
+                                    <td className="d-flex">
                                         <LinkContainer
                                             to={`/admin/categories/${category._id}/edit`}
                                         >
