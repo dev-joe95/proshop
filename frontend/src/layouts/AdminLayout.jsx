@@ -14,7 +14,9 @@ function AdminLayout(props) {
                         role="main"
                         className="col-md-9 ml-sm-auto col-lg-10 px-md-4"
                     >
-                        <div className="main-content py-5">{props.children}</div>
+                        <div className="main-content py-3">
+                            {props.children}
+                        </div>
                     </main>
                 </div>
             </div>
