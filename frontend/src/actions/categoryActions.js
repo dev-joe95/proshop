@@ -91,3 +91,34 @@ export const createCategory = () => async (dispatch, getState) => {
         });
     }
 };
+
+export const updateCategory = (category) => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: "CATEGORY_UPDATE_REQUEST",
+        });
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${getState().userLogin.token}`,
+            },
+        };
+        const { data } = await axios.put(
+            `/api/category/${category._id}`,
+            category,
+            config
+        );
+        dispatch({
+            type: "CATEGORY_UPDATE_SUCCESS",
+            payload: data,
+        });
+    } catch (error) {
+        dispatch({
+            type: "CATEGORY_UPDATE_FAIL",
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+    }
+};
