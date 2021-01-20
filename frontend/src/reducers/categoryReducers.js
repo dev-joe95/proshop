@@ -51,3 +51,18 @@ export const categoryCreateReducer = (state = { category: {} }, action) => {
             return state;
     }
 };
+
+export const categoryUpdateReducer = (state = { category: {} }, action) => {
+    switch (action.type) {
+        case "CATEGORY_UPDATE_REQUEST":
+            return { loading: true };
+        case "CATEGORY_UPDATE_SUCCESS":
+            return { loading: false, success: true, category: action.payload };
+        case "CATEGORY_UPDATE_FAIL":
+            return { loading: false, error: action.payload };
+        case "CATEGORY_UPDATE_RESET":
+            return { category: {} };
+        default:
+            return state;
+    }
+};
