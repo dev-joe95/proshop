@@ -7,6 +7,7 @@ import {
     productDeleteReducer,
     productDetailsReducer,
     productListReducer,
+    productUpdateReducer,
 } from "./reducers/productReducers";
 import {
     userDeleteReducer,
@@ -22,6 +23,7 @@ import {
     categoryDeleteReducer,
     categoryDetailsReducer,
     categoryListReducer,
+    categoryUpdateReducer,
 } from "./reducers/categoryReducers";
 import {
     orderCreateReducer,
@@ -50,7 +52,9 @@ const reducer = combineReducers({
     categoryDetails: categoryDetailsReducer,
     categoryDelete: categoryDeleteReducer,
     productCreate: productCreateReducer,
+    productUpdate: productUpdateReducer,
     categoryCreate: categoryCreateReducer,
+    categoryUpdate: categoryUpdateReducer,
 });
 const cartItemsFromStorage = localStorage.getItem("cartItems")
     ? JSON.parse(localStorage.getItem("cartItems"))
