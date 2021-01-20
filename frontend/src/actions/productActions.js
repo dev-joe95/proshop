@@ -72,7 +72,7 @@ export const createProduct = () => async (dispatch, getState) => {
         });
         const config = {
             headers: {
-                // "Content-Type": "application/json",
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${getState().userLogin.token}`,
             },
         };
@@ -84,6 +84,37 @@ export const createProduct = () => async (dispatch, getState) => {
     } catch (error) {
         dispatch({
             type: "PRODUCT_CREATE_FAIL",
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+    }
+};
+
+export const updateProduct = (product) => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: "PRODUCT_UPDATE_REQUEST",
+        });
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${getState().userLogin.token}`,
+            },
+        };
+        const { data } = await axios.put(
+            `/api/product/${product._id}`,
+            product,
+            config
+        );
+        dispatch({
+            type: "PRODUCT_UPDATE_SUCCESS",
+            payload: data,
+        });
+    } catch (error) {
+        dispatch({
+            type: "PRODUCT_UPDATE_FAIL",
             payload:
                 error.response && error.response.data.message
                     ? error.response.data.message
