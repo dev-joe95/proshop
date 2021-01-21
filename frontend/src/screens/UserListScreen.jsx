@@ -12,10 +12,10 @@ const UserListScreen = ({ history }) => {
     const { loading, users, error } = useSelector((state) => state.userList);
     const { success: successDelete } = useSelector((state) => state.userDelete);
     useEffect(() => {
-        if (token && getCurrentUser(token).isAdmin) {
-            dispatch(listUsers());
-        } else {
+        if (!token && !getCurrentUser(token).isAdmin) {
             history.push("/login");
+        } else {
+            dispatch(listUsers());
         }
     }, [dispatch, successDelete, token, history]);
     const deleteHandler = (id) => {
