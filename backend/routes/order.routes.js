@@ -1,9 +1,11 @@
 import express from "express";
-import {protect} from "../middleware/auth.js";
+import { admin, protect } from "../middleware/auth.js";
 import {
     addOrderItems,
     getMyOrders,
     getOrderDetails,
+    getOrders,
+    updateOrderToDelivered,
     updateOrderToPaid,
 } from "../controllers/order.controller.js";
 
@@ -40,5 +42,21 @@ router.get("/myorders", protect, getMyOrders);
  * @access      private
  */
 router.get("/:id", protect, getOrderDetails);
+
+/**
+ * @description Get order for admin
+ * @method      GET
+ * @url         /api/order
+ * @access      private/Admin
+ */
+router.get("/", protect, admin, getOrders);
+
+/**
+ * @description Update order to deliver
+ * @method      PUT
+ * @url         /api/order/<id>/deliver
+ * @access      private/Admin
+ */
+router.put("/:id/deliver", protect, admin, updateOrderToDelivered);
 
 export default router;
