@@ -3,7 +3,7 @@ import categoryRouter from "../routes/category.routes.js";
 import productRouter from "../routes/product.routes.js";
 import userRouter from "../routes/user.routes.js";
 import orderRouter from "../routes/order.routes.js";
-import uploadRouter from "../routes/upload.routes";
+import uploadRouter from "../routes/upload.routes.js";
 import notFound from "../middleware/notFound.js";
 import error from "../middleware/error.js";
 export default function (app) {
