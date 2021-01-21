@@ -17,13 +17,23 @@ import DefaultRoute from "./routes/DefaultRoute";
 import UserEditScreen from "./screens/UserEditScreen";
 import ProductListScreen from "./screens/ProductListScreen";
 import CategoryListScreen from "./screens/CategoryListScreen";
-import ProductEditScreen from './screens/ProductEditScreen';
-import CategoryEditScreen from './screens/CategoryEditScreen ';
+import ProductEditScreen from "./screens/ProductEditScreen";
+import CategoryEditScreen from "./screens/CategoryEditScreen ";
+import OrderListScreen from "./screens/OrderListScreen";
 
 function App() {
     return (
         <React.Fragment>
             <BrowserRouter>
+                <DefaultRoute
+                    path="/admin/orders/:id"
+                    component={OrderScreen}
+                />
+                <AdminRoute
+                    path="/admin/orders"
+                    exact
+                    component={OrderListScreen}
+                />
                 <AdminRoute
                     path="/admin/categories/:id/edit"
                     exact
