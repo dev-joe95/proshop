@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Loader from "../components/Loader";
 import { listProductDetails, updateProduct } from "../actions/productActions";
 import { listCategories } from "../actions/categoryActions";
+import axios from "axios";
 
 const ProductEditScreen = ({ match, history }) => {
     const productId = match.params.id;
@@ -24,6 +25,7 @@ const ProductEditScreen = ({ match, history }) => {
     const [image, setImage] = useState("");
     const [category, setCategory] = useState("");
     const [countInStock, setCountInStock] = useState(0);
+    const [uploading, setUploading] = useState(false);
     const dispatch = useDispatch();
     const { loading, error, product } = useSelector(
         (state) => state.productDetails
@@ -69,6 +71,23 @@ const ProductEditScreen = ({ match, history }) => {
                 countInStock,
             })
         );
+    };
+    const uploadFileHandler = async (e) => {
+        const file = e.target.files[0];
+        const formData = new FormData();
+        formData.append("image", file);
+        setUploading(true);
+        try {
+            const config = {
+                headers: { "Content-Type": "multipart/form-data" },
+            };
+            const { data } = await axios.post("/api/upload", formData, config);
+            setImage(data);
+            setUploading(false);
+        } catch (error) {
+            console.error(error);
+            setUploading(false);
+        }
     };
     return (
         <React.Fragment>
@@ -189,11 +208,13 @@ const ProductEditScreen = ({ match, history }) => {
                             </Form.Group>
                             <Form.Group>
                                 <Form.Label>Image</Form.Label>
-                                {/* <Form.File
+                                <Form.File
                                     id="exampleFormControlFile1"
-                                    label="Image"
-                                /> */}
-
+                                    label="Choose Image"
+                                    custom
+                                    onChange={uploadFileHandler}
+                                />
+                                {uploading && <Loader dimension="20px" />}
                                 <Form.Control
                                     type="text"
                                     placeholder="Example:  /image/abc.png"
