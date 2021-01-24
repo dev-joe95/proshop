@@ -5,6 +5,8 @@ import Product from "../components/Product";
 import Loader from "../components/Loader";
 import { listProducts } from "../actions/productActions";
 import Paginate from "../components/Paginate";
+import ProductCarousel from "../components/ProductCarousel";
+import SaleCarousel from "../components/SaleCarousel";
 
 const HomeScreen = ({ match }) => {
     const keyword = match.params.keyword;
@@ -14,23 +16,35 @@ const HomeScreen = ({ match }) => {
         (state) => state.productList
     );
     useEffect(() => {
-        dispatch(listProducts(keyword, pageNumber, 8));
+        dispatch(listProducts(keyword, pageNumber, 6));
     }, [dispatch, keyword, pageNumber]);
     return (
         <React.Fragment>
+            {!keyword && <ProductCarousel />}
             {loading ? (
                 <Loader />
             ) : errors ? (
                 <Alert variant="danger">{errors}</Alert>
             ) : (
                 <React.Fragment>
-                    <h2>Latest Products</h2>
+                    <h2 className="mt-5">Latest Products</h2>
                     <Row>
-                        {products.map((p, index) => (
-                            <Col key={index} sm={12} md={6} lg={4} xl={3}>
-                                <Product product={p} />
-                            </Col>
-                        ))}
+                        <Col md={9}>
+                            <Row>
+                                {products.map((p, index) => (
+                                    <Col
+                                        key={index}
+                                        sm={12}
+                                        md={6}
+                                        lg={4}
+                                        xl={4}
+                                    >
+                                        <Product product={p} />
+                                    </Col>
+                                ))}
+                            </Row>
+                        </Col>
+                        <Col md={3}>{!keyword && <SaleCarousel />}</Col>
                     </Row>
                     <Paginate
                         pages={pages}
