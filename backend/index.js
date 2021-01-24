@@ -4,6 +4,7 @@ import path from "path";
 import dotenv from "dotenv";
 import db from "./startup/db.js";
 import routes from "./startup/routes.js";
+import morgan from "morgan";
 
 dotenv.config();
 /**
@@ -11,6 +12,10 @@ dotenv.config();
  */
 db();
 const app = express();
+
+if (process.env.NODE_ENV === "development") {
+    app.use(morgan("dev"));
+}
 /**
  * Calling app routes
  */
