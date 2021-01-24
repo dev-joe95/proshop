@@ -50,6 +50,11 @@ function App() {
                     component={ProductEditScreen}
                 />
                 <AdminRoute
+                    path="/admin/products/:pageNumber"
+                    exact
+                    component={ProductListScreen}
+                />
+                <AdminRoute
                     path="/admin/products"
                     exact
                     component={ProductListScreen}
@@ -74,7 +79,21 @@ function App() {
                 <DefaultRoute path="/cart/:id?" component={CartScreen} />
                 <DefaultRoute path="/product/:id" component={ProductScreen} />
                 <DefaultRoute path="/products" component={HomeScreen} exact />
-                <DefaultRoute path="/search/:keyword" component={HomeScreen} exact />
+                <DefaultRoute
+                    path="/search/:keyword"
+                    component={HomeScreen}
+                    exact
+                />
+                <DefaultRoute
+                    path="/pageNumber/:pageNumber"
+                    component={HomeScreen}
+                    exact
+                />{" "}
+                <DefaultRoute
+                    path="/search/:keyword/pageNumber/:pageNumber"
+                    component={HomeScreen}
+                    exact
+                />
                 <DefaultRoute path="/" component={HomeScreen} exact />
             </BrowserRouter>
         </React.Fragment>
