@@ -1,19 +1,12 @@
 import React, { useState, useEffect } from "react";
-import {
-    Navbar,
-    Nav,
-    NavDropdown,
-    Container,
-    Badge,
-    FormControl,
-    Row,
-    Col,
-} from "react-bootstrap";
+import { Navbar, Nav, NavDropdown, Container, Badge } from "react-bootstrap";
 import logo from "../logo.svg";
 import { LinkContainer } from "react-router-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { getCurrentUser } from "../getUserInfo";
 import { logout } from "../actions/userActions";
+import SearchBox from "./SearchBox";
+import { Route } from "react-router-dom";
 
 const Header = () => {
     const [user, setUser] = useState({});
@@ -37,14 +30,14 @@ const Header = () => {
                                 src={logo}
                                 width="20"
                                 height="20"
-                                className="d-inline-block align-top"
-                            />{" "}
+                                className="d-inline-block align-top mx-1"
+                            />
                             proshop
                         </Navbar.Brand>
                     </LinkContainer>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">
-                        <Nav className="mr-auto">
+                        <Nav>
                             <LinkContainer to="/products">
                                 <Nav.Link>products</Nav.Link>
                             </LinkContainer>
@@ -78,15 +71,11 @@ const Header = () => {
                                 </LinkContainer>
                             </NavDropdown>
                         </Nav>
-                        <Row>
-                            <Col>
-                                <FormControl
-                                    type="search"
-                                    placeholder="Search"
-                                ></FormControl>
-                            </Col>
-                        </Row>
-
+                        <Route
+                            render={({ history }) => (
+                                <SearchBox history={history} />
+                            )}
+                        />
                         <Nav className="ml-auto">
                             <LinkContainer to="/cart">
                                 <Nav.Link>
