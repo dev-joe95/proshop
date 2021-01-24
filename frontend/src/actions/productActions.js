@@ -122,3 +122,31 @@ export const updateProduct = (product) => async (dispatch, getState) => {
         });
     }
 };
+export const createProductReview = (id, review) => async (
+    dispatch,
+    getState
+) => {
+    try {
+        dispatch({
+            type: "PRODUCT_CREATE_REVIEW_REQUEST",
+        });
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${getState().userLogin.token}`,
+            },
+        };
+        await axios.post(`/api/product/${id}/review`, review, config);
+        dispatch({
+            type: "PRODUCT_CREATE_REVIEW_SUCCESS",
+        });
+    } catch (error) {
+        dispatch({
+            type: "PRODUCT_CREATE_REVIEW_FAIL",
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+    }
+};
