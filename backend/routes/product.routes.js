@@ -6,6 +6,8 @@ import {
     createProduct,
     updateProduct,
     createProductReview,
+    getTopRatedProducts,
+    getTopSaleProducts,
 } from "../controllers/product.controller.js";
 import { admin, protect } from "../middleware/auth.js";
 
@@ -18,6 +20,20 @@ const router = express.Router();
  * @access      private/Admin
  */
 router.get("/", getProductList);
+/**
+ * @description Get top rated product
+ * @method      GET
+ * @url         /api/product/top
+ * @access      public
+ */
+router.get("/top", getTopRatedProducts);
+/**
+ * @description Get top sale product
+ * @method      GET
+ * @url         /api/product/sale
+ * @access      public
+ */
+router.get("/sale", getTopSaleProducts);
 /**
  * @description GET user by id for admin
  * @method      GET
