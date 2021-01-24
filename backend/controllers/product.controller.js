@@ -2,13 +2,19 @@ import asyncHandler from "express-async-handler";
 import Product from "../models/product.js";
 
 const getProductList = asyncHandler(async (req, res) => {
-    await Product.find({}, (err, product) => {
-        if (err) res.status(400).send(err);
-        res.json(product);
-    })
+    const keyword = req.query.search
+        ? { name: { $regex: req.query.search, $options: "i" } }
+        : {};
+    const products = await Product.find({ ...keyword })
         .sort("-updatedAt")
-        .populate("user")
+        .populate("user", "id name")
         .populate("category");
+    if (products) {
+        res.json(products);
+    } else {
+        res.status(400);
+        throw new Error("No products found");
+    }
 });
 
 const getProductDetails = asyncHandler(async (req, res) => {
