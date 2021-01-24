@@ -12,7 +12,6 @@ dotenv.config();
  */
 db();
 const app = express();
-
 if (process.env.NODE_ENV === "development") {
     app.use(morgan("dev"));
 }
@@ -20,13 +19,6 @@ if (process.env.NODE_ENV === "development") {
  * Calling app routes
  */
 routes(app);
-
-const __dirname = path.resolve();
-app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
-
-app.get("/", (req, res) => {
-    res.send("API is running");
-});
 
 const port = process.env.PORT || 5000;
 app.listen(port, console.log(`Server running on port ${port}`.bgGreen.black));
