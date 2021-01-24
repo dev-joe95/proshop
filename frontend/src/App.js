@@ -74,6 +74,7 @@ function App() {
                 <DefaultRoute path="/cart/:id?" component={CartScreen} />
                 <DefaultRoute path="/product/:id" component={ProductScreen} />
                 <DefaultRoute path="/products" component={HomeScreen} exact />
+                <DefaultRoute path="/search/:keyword" component={HomeScreen} exact />
                 <DefaultRoute path="/" component={HomeScreen} exact />
             </BrowserRouter>
         </React.Fragment>
