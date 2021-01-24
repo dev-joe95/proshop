@@ -124,6 +124,26 @@ const createProductReview = asyncHandler(async (req, res) => {
     }
 });
 
+const getTopRatedProducts = asyncHandler(async (req, res) => {
+    const products = await Product.find({}).sort({ rating: -1 }).limit(3);
+    if (products) {
+        res.json(products);
+    } else {
+        res.status(400);
+        throw new Error("No products found");
+    }
+});
+
+const getTopSaleProducts = asyncHandler(async (req, res) => {
+    const products = await Product.find({}).sort({ sale: -1 }).limit(3);
+    if (products) {
+        res.json(products);
+    } else {
+        res.status(400);
+        throw new Error("No products found");
+    }
+});
+
 export {
     getProductList,
     getProductDetails,
@@ -131,4 +151,6 @@ export {
     createProduct,
     updateProduct,
     createProductReview,
+    getTopRatedProducts,
+    getTopSaleProducts,
 };
