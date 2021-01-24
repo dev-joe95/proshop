@@ -91,3 +91,37 @@ export const productReviewCreateReducer = (state = {}, action) => {
             return state;
     }
 };
+export const productTopRatedReducer = (state = { products: [] }, action) => {
+    switch (action.type) {
+        case "PRODUCT_TOP_REQUEST":
+            return { loading: true, products: [] };
+        case "PRODUCT_TOP_SUCCESS":
+            return {
+                loading: false,
+                products: action.payload,
+            };
+        case "PRODUCT_TOP_FAIL":
+            return { loading: false, error: [] };
+        case "PRODUCT_TOP_RESET":
+            return { products: [] };
+        default:
+            return state;
+    }
+};
+export const productTopSaleReducer = (state = { products: [] }, action) => {
+    switch (action.type) {
+        case "PRODUCT_TOP_SALE_REQUEST":
+            return { loading: true, products: [] };
+        case "PRODUCT_TOP_SALE_SUCCESS":
+            return {
+                loading: false,
+                products: action.payload,
+            };
+        case "PRODUCT_TOP_SALE_FAIL":
+            return { loading: false, error: [] };
+        case "PRODUCT_TOP_SALE_RESET":
+            return { products: [] };
+        default:
+            return state;
+    }
+};
