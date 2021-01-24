@@ -9,11 +9,13 @@ import {
 } from "../actions/productActions";
 import Loader from "../components/Loader";
 import { getCurrentUser } from "../getUserInfo";
+import Paginate from "../components/Paginate";
 
 const ProductListScreen = ({ history, match }) => {
+    const pageNumber = match.params.pageNumber || 1;
     const dispatch = useDispatch();
     const { token } = useSelector((state) => state.userLogin);
-    const { loading, products, error } = useSelector(
+    const { loading, products, error, page, pages } = useSelector(
         (state) => state.productList
     );
     const {
@@ -37,7 +39,7 @@ const ProductListScreen = ({ history, match }) => {
             if (successCreate) {
                 history.push(`/admin/products/${createdProduct._id}/edit`);
             } else {
-                dispatch(listProducts());
+                dispatch(listProducts("", pageNumber, 10));
             }
         }
     }, [
@@ -47,6 +49,7 @@ const ProductListScreen = ({ history, match }) => {
         successDelete,
         successCreate,
         createdProduct,
+        pageNumber,
     ]);
     const deleteHandler = (id) => {
         if (window.confirm("Are you sure")) {
@@ -77,65 +80,68 @@ const ProductListScreen = ({ history, match }) => {
             ) : error ? (
                 <Alert variant="danger">{error}</Alert>
             ) : (
-                <Table striped hover responsive bordered size="sm">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>NAME</th>
-                            <th>PRICE</th>
-                            <th>SALE</th>
-                            <th>BRAND</th>
-                            <th>SELLER</th>
-                            <th>CATEGORY</th>
-                            <th>IN STOCK</th>
-                            <th>RATING</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {products &&
-                            products.map((product, index) => (
-                                <tr key={index}>
-                                    <td>{product._id}</td>
-                                    <td>{product.name}</td>
-                                    <td>${product.price}</td>
-                                    <td>{product.sale}</td>
-                                    <td>{product.brand}</td>
-                                    <td>{product.user.name}</td>
-                                    <td>{product.category.name}</td>
-                                    <td>
-                                        {product.countInStock ? (
-                                            product.countInStock
-                                        ) : (
-                                            <i className="fas fa-times text-danger"></i>
-                                        )}
-                                    </td>
-                                    <td>{product.rating}</td>
-                                    <td className="d-flex">
-                                        <LinkContainer
-                                            to={`/admin/products/${product._id}/edit`}
-                                        >
-                                            <Button
-                                                variant="info"
-                                                className="btn-sm"
+                <React.Fragment>
+                    <Table striped hover responsive bordered size="sm">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>NAME</th>
+                                <th>PRICE</th>
+                                <th>SALE</th>
+                                <th>BRAND</th>
+                                <th>SELLER</th>
+                                <th>CATEGORY</th>
+                                <th>IN STOCK</th>
+                                <th>RATING</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {products &&
+                                products.map((product, index) => (
+                                    <tr key={index}>
+                                        <td>{product._id}</td>
+                                        <td>{product.name}</td>
+                                        <td>${product.price}</td>
+                                        <td>{product.sale}</td>
+                                        <td>{product.brand}</td>
+                                        <td>{product.user.name}</td>
+                                        <td>{product.category.name}</td>
+                                        <td>
+                                            {product.countInStock ? (
+                                                product.countInStock
+                                            ) : (
+                                                <i className="fas fa-times text-danger"></i>
+                                            )}
+                                        </td>
+                                        <td>{product.rating}</td>
+                                        <td className="d-flex">
+                                            <LinkContainer
+                                                to={`/admin/products/${product._id}/edit`}
                                             >
-                                                <i className="fas fa-edit"></i>
+                                                <Button
+                                                    variant="info"
+                                                    className="btn-sm"
+                                                >
+                                                    <i className="fas fa-edit"></i>
+                                                </Button>
+                                            </LinkContainer>
+                                            <Button
+                                                variant="danger"
+                                                className="btn-sm"
+                                                onClick={() =>
+                                                    deleteHandler(product._id)
+                                                }
+                                            >
+                                                <i className="fas fa-trash"></i>
                                             </Button>
-                                        </LinkContainer>
-                                        <Button
-                                            variant="danger"
-                                            className="btn-sm"
-                                            onClick={() =>
-                                                deleteHandler(product._id)
-                                            }
-                                        >
-                                            <i className="fas fa-trash"></i>
-                                        </Button>
-                                    </td>
-                                </tr>
-                            ))}
-                    </tbody>
-                </Table>
+                                        </td>
+                                    </tr>
+                                ))}
+                        </tbody>
+                    </Table>
+                    <Paginate pages={pages} page={page} isAdmin />
+                </React.Fragment>
             )}
         </React.Fragment>
     );
