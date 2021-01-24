@@ -1,12 +1,14 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Alert, Col, Row } from "react-bootstrap";
+import { Helmet } from "react-helmet";
 import Product from "../components/Product";
 import Loader from "../components/Loader";
 import { listProducts } from "../actions/productActions";
 import Paginate from "../components/Paginate";
 import ProductCarousel from "../components/ProductCarousel";
 import SaleCarousel from "../components/SaleCarousel";
+import { Link } from "react-router-dom";
 
 const HomeScreen = ({ match }) => {
     const keyword = match.params.keyword;
@@ -20,7 +22,16 @@ const HomeScreen = ({ match }) => {
     }, [dispatch, keyword, pageNumber]);
     return (
         <React.Fragment>
-            {!keyword && <ProductCarousel />}
+            <Helmet>
+                <title>Home | Welcome to proshop</title>
+            </Helmet>
+            {!keyword ? (
+                <ProductCarousel />
+            ) : (
+                <Link to="/" className="btn btn-dark">
+                    go back
+                </Link>
+            )}
             {loading ? (
                 <Loader />
             ) : errors ? (

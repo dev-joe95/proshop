@@ -16,6 +16,7 @@ import {
 } from "react-bootstrap";
 import Rating from "../components/Rating";
 import Loader from "../components/Loader";
+import { Helmet } from "react-helmet";
 import {
     listProductDetails,
     createProductReview,
@@ -54,6 +55,9 @@ const ProductScreen = ({ history, match }) => {
     };
     return (
         <React.Fragment>
+            <Helmet>
+                <title>{`${product.name}`} | Welcome to proshop</title>
+            </Helmet>
             <Link className="btn btn-dark my-3" to="/">
                 <i className="fas fa-chevron-left mx-1"></i>Go Back
             </Link>
