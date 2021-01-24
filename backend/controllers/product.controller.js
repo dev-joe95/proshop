@@ -2,15 +2,24 @@ import asyncHandler from "express-async-handler";
 import Product from "../models/product.js";
 
 const getProductList = asyncHandler(async (req, res) => {
+    const pageSize = Number(req.query.pageSize) || 4;
+    const page = Number(req.query.pageNumber) || 1;
     const keyword = req.query.search
         ? { name: { $regex: req.query.search, $options: "i" } }
         : {};
+    const count = await Product.countDocuments({ ...keyword });
     const products = await Product.find({ ...keyword })
         .sort("-updatedAt")
         .populate("user", "id name")
-        .populate("category");
+        .populate("category")
+        .limit(pageSize)
+        .skip(pageSize * (page - 1));
     if (products) {
-        res.json(products);
+        res.json({
+            products,
+            page,
+            pages: Math.ceil(count / pageSize),
+        });
     } else {
         res.status(400);
         throw new Error("No products found");
